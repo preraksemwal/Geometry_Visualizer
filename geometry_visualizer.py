@@ -1,40 +1,27 @@
+#========================= AUTHOR (of class Shape only) :- IIITD-IP course Faculty   ===================
+#-------------------------------------------------------------------------------------------------------
+#=================================    AUTHOR :-  PRERAK SEMWAL     =====================================
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 class Shape:
-    '''
-    DO NOT MODIFY THIS CLASS
-    DO NOT ADD ANY NEW METHODS TO THIS CLASS
-    '''
     def __init__(self):
         self.T_s = None
         self.T_r = None
         self.T_t = None
 
     def translate(self, dx, dy):
-        '''
-        Polygon and Circle class should use this function to calculate the translation
-        '''
         self.T_t = np.array([[1, 0, dx], [0, 1, dy], [0, 0, 1]])
 
     def scale(self, sx, sy):
-        '''
-        Polygon and Circle class should use this function to calculate the scaling
-        '''
         self.T_s = np.array([[sx, 0, 0], [0, sy, 0], [0, 0, 1]])
 
     def rotate(self, deg):
-        '''
-        Polygon and Circle class should use this function to calculate the rotation
-        '''
         rad = deg * (np.pi / 180)
         self.T_r = np.array([[np.cos(rad), np.sin(rad), 0], [-np.sin(rad), np.cos(rad), 0], [0, 0, 1]])
 
     def plot(self, x_dim, y_dim):
-        '''
-        Polygon and Circle class should use this function while plotting
-        x_dim and y_dim should be such that both the figures are visible inside the plot
-        '''
         x_dim, y_dim = 1.2 * x_dim, 1.2 * y_dim
         plt.plot((-x_dim, x_dim), [0, 0], 'k-')
         plt.plot([0, 0], (-y_dim, y_dim), 'k-')
@@ -43,17 +30,12 @@ class Shape:
         plt.grid()
         plt.show()
 
-####################################################################################
+
 #################################################################################### 
+
 class Polygon(Shape):
-    '''
-    Object of class Polygon should be created when shape type is 'polygon'
-    '''
 
     def __init__(self, A):                                          
-        '''
-        Initializations here
-        '''
         super().__init__()       # self have T_t,T_s,T_r
         self.A = A.T
         self.n = (self.A).shape[1]
@@ -64,11 +46,6 @@ class Polygon(Shape):
 
 
     def translate(self, dx, dy=None):                                    
-        '''
-        Function to translate the polygon
-        This function takes 2 arguments: dx and dy
-        This function returns the final coordinates
-        '''
         if dy==None:
             dy=dx
         super().translate(dx,dy)     # inititalise   self.T_t
@@ -83,13 +60,7 @@ class Polygon(Shape):
 
 
 
-
     def scale(self, sx, sy=None):                                 
-        '''
-        Function to scale the polygon
-        This function takes 2 arguments: sx and sx
-        This function returns the final coordinates
-        '''
         if sy==None:
             sy=sx
         self.axis_sum = (self.A).sum(axis=1)
@@ -119,13 +90,8 @@ class Polygon(Shape):
 
 
 
-
     def rotate(self, deg, rx=0, ry=0):           
-        '''
-        Function to rotate the polygon
-        This function takes 3 arguments: deg, rx(optional), ry(optional). Default rx and ry = 0. (Rotate about origin)
-        This function returns the final coordinates
-        '''
+
         super().rotate(deg)  # assign T_r
         for i in range(self.n):
             self.A[0][i] -= rx        # make apparent origin to centre
@@ -146,20 +112,10 @@ class Polygon(Shape):
         
         return ( m[0] , m[1] )
  
-       
-        
-
-
-
+  
 
     def plot(self):
-        '''                   
-        Function to plot the polygon
-        This function should plot both the initial and the transformed polygon
-        This function should use the parent's class plot method as well
-        This function does not take any input
-        This function does not return anything
-        '''
+
         x_ = list(self.A[0])
         y_ = list(self.A[1])
         x_.append(x_[0])
@@ -206,15 +162,11 @@ class Polygon(Shape):
         return (np.array(ans)).reshape(3,N)
 
 ####################################################################################
-####################################################################################
+
 class Circle(Shape):
-    '''
-    Object of class Circle should be created when shape type is 'circle'
-    '''    
+
     def __init__(self, x=0, y=0, radius=5):                           
-        '''
-        Initializations here
-        '''
+
         super().__init__()             # gives T_t,t_s,T_r
         self.plot_no=1
         self.x=x
@@ -229,11 +181,6 @@ class Circle(Shape):
 
 
     def translate(self, dx, dy=None):                             
-        '''
-        Function to translate the circle
-        This function takes 2 arguments: dx and dy (dy is optional).
-        This function returns the final coordinates and the radius
-        '''
         if dy==None:
             dy=dx
         super().translate(dx,dy)             # inititalise T_t
@@ -245,22 +192,14 @@ class Circle(Shape):
         
 
     def scale(self, sx):                                     
-        '''
-        Function to scale the circle
-        This function takes 1 argument: sx
-        This function returns the final coordinates and the radius
-        '''
+
         self.radius = self.radius*sx 
         return ( round(float(self.A[0]) , 2) , round(float(self.A[1]) , 2) , round(self.radius , 2) ) 
 
 
 
     def rotate(self, deg, rx=0, ry=0):                    
-        '''
-        Function to rotate the circle
-        This function takes 3 arguments: deg, rx(optional), ry(optional). Default rx and ry = 0. (Rotate about origin)
-        This function returns the final coordinates and the radius
-        '''
+
         super().rotate(deg)                       # assign T_r
         self.A[0][0] -= rx                        # we change cordinates w.r.t rx,ry
         self.A[1][0] -= ry                                            
@@ -271,13 +210,7 @@ class Circle(Shape):
 
 
     def plot(self):
-        '''
-        Function to plot the circle
-        This function should plot both the initial and the transformed circle
-        This function should use the parent's class plot method as well
-        This function does not take any input
-        This function does not return anything 
-        '''
+
         
         if self.plot_no==0:           # plot dotted also
             circle_ = plt.Circle( (circle_object_.x,circle_object_.y), radius=circle_object_.radius ,color="black" , fc="white", linestyle="--",linewidth=1, fill=False)
@@ -308,12 +241,11 @@ class Circle(Shape):
 
 
 
+
 ####################################################################################
-####################################################################################
+
 if __name__ == "__main__":
-    '''
-    Add menu here as mentioned in the sample output section of the assignment document.
-    '''
+
     verbose=int(input("verbose? 1 to plot, 0 otherwise: ")) 
     test_cases=int(input("Enter the number of test cases: "))
     while test_cases:
